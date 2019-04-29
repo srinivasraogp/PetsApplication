@@ -11,7 +11,7 @@ import com.hcl.pp.models.PetModel;
 @Repository
 public interface PetRepository  extends JpaRepository<PetModel,Integer> {
 	
-	@Query(select * from pets where pet_ownerId = userId, native = true)
+	@Query(value = "select * from pets where pet_ownerId = userId", nativeQuery = true)
 	List<PetModel> findAllByCustomerId(int userId);
 
 

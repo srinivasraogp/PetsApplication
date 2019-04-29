@@ -1,8 +1,5 @@
 package com.hcl.pp.services;
-
-import java.util.Collection;
 import java.util.List;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +29,10 @@ public class UserServiceImpl implements UserService {
 		public String buyPets(int petId,int userId) {
 			PetModel petModel = new PetModel();
 			petModel = petRepository.findById(petId).get();
+			userModel = userRepo.findById(userId).orElse(null);
+			if(userModel == null) {
+				return "Please add user before purchasing any pet";
+			}
 			if(petModel.getPetOwnerID() ==0 ) {
 				petModel.setPetOwnerID(userId);
 				petRepository.save(petModel);
@@ -49,9 +50,6 @@ public class UserServiceImpl implements UserService {
 			List<PetModel> petModelListFinal = null;
 			List<Pet> petsDtolist = null;
 			petModelList = petRepository.findAllByCustomerId(userId);
-			//petModelListFinal = petModelList.forEach(pet -> pet.getPetOwnerID() == userId, Collection.Collectors.toList());
-	
-		 //   petsDtolist = (List<Pet>) petModelList;
 			return petsDtolist;
 			
 		}
